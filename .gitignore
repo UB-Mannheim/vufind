@@ -6,3 +6,13 @@ ChangeLog
 TAGS
 *~
 vendor/.git
+
+#
+# UB Mannheim specific
+#
+
+# Ignore the solr dir (is being indexed on another host and copied)
+solr/*
+
+# Ignore the local dir (is being kept in a separate repo and synced)
+local/*
