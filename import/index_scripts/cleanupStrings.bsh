@@ -1,0 +1,29 @@
+/**
+ * Script to cleanup identifiers.
+ *
+ * This can be used to override built-in SolrMarc custom functions.  If you change
+ * this script, you will need to activate it in import/marc_local.properties before
+ * it will be applied during indexing.
+ */
+import org.marc4j.marc.Record;
+import org.solrmarc.tools.CallNumUtils;
+
+// define the base level indexer so that its methods can be called from the script.
+// note that the SolrIndexer code will set this value before the script methods are called.
+org.solrmarc.index.SolrIndexer indexer = null;
+
+/**
+ * Replace Slashes in a field
+ * @param record
+ * @return Call number label
+ */
+public String replaceSlash(Record record, String fieldSpec) {
+
+    String val = indexer.getFirstFieldVal(record, fieldSpec);
+
+    if (val != null) {
+        return val.replaceAll("/", "");
+    } else {
+        return val;
+    }
+}
