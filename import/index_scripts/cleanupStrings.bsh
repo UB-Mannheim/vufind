@@ -7,6 +7,7 @@
  */
 import org.marc4j.marc.Record;
 import org.solrmarc.tools.CallNumUtils;
+import java.util.UUID;
 
 // define the base level indexer so that its methods can be called from the script.
 // note that the SolrIndexer code will set this value before the script methods are called.
@@ -24,6 +25,6 @@ public String replaceSlash(Record record, String fieldSpec) {
     if (val != null) {
         return val.replaceAll("/", "");
     } else {
-        return val;
+        return UUID.randomUUID().toString();
     }
 }
