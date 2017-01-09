@@ -10,6 +10,8 @@ else
   JAVA="java"
 fi
 
+SKIP_ALL_AUTHORITY=1
+
 set -e
 set -x
 
@@ -36,10 +38,16 @@ function locate_index
     fi
 
     eval $targetVar="$indexDir/$subDir"
+    if [ ! -e "${!targetVar}" ] || [ ! -d "${!targetVar}" ];then
+        echo "$targetVar directory does not exist: '${!targetVar}'."
+        exit 1
+    fi
 }
 
-locate_index "bib_index" "../solr/biblio"
-locate_index "auth_index" "../solr/authority"
+locate_index "bib_index" "../solr/biblio/data"
+if [ "$SKIP_ALL_AUTHORITY" != "1" ];then
+    locate_index "auth_index" "../solr/authority/data"
+fi
 index_dir="../solr/alphabetical_browse"
 
 mkdir -p "$index_dir"
@@ -52,7 +60,7 @@ function build_browse
 
     extra_jvm_opts=$4
 
-    if [ "$skip_authority" = "1" ]; then
+    if [ "$skip_authority" = "1" ] || [ "$SKIP_ALL_AUTHORITY" = "1" ]; then
         $JAVA ${extra_jvm_opts} -Dfile.encoding="UTF-8" -Dfield.preferred=heading -Dfield.insteadof=use_for -cp $CLASSPATH PrintBrowseHeadings "$bib_index" "$field" "${browse}.tmp"
     else
         $JAVA ${extra_jvm_opts} -Dfile.encoding="UTF-8" -Dfield.preferred=heading -Dfield.insteadof=use_for -cp $CLASSPATH PrintBrowseHeadings "$bib_index" "$field" "$auth_index" "${browse}.tmp"

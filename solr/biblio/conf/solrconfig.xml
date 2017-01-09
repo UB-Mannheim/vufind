@@ -147,7 +147,7 @@
     </listener>
     -->
     <!-- A postOptimize event is fired only after every optimize command, useful
-         in conjunction with index distribution to only distribute optimized indices
+         in conjunction with index distribution to only distribute optimized indicies
     <listener event="postOptimize" class="solr.RunExecutableListener">
       <str name="exe">snapshooter</str>
       <str name="dir">solr/bin</str>
@@ -318,7 +318,7 @@
             (and validation against If-Modified-Since requests) will all be
             relative to when the current Searcher was opened.
             You can change it to lastModFrom="dirLastMod" if you want the
-            value to exactly correspond to when the physical index was last
+            value to exactly corrispond to when the physical index was last
             modified.
 
             etagSeed="..." is an option you can change to force the ETag
@@ -427,6 +427,9 @@
   </requestHandler>
 
   <requestHandler name="/browse" class="org.vufind.solr.handler.BrowseRequestHandler">
+    <str name="authIndexPath">${solr.solr.home:./solr}/authority/index</str>
+    <str name="bibIndexPath">${solr.solr.home:./solr}/biblio/index</str>
+
     <!-- These definitions should match the field names used in the authority index. -->
     <str name="preferredHeadingField">heading</str>
     <str name="useInsteadHeadingField">use_for</str>
@@ -496,7 +499,7 @@
 
    Search components are registered to SolrCore and used by Search Handlers
 
-   By default, the following components are available:
+   By default, the following components are avaliable:
 
    <searchComponent name="query"     class="org.apache.solr.handler.component.QueryComponent" />
    <searchComponent name="facet"     class="org.apache.solr.handler.component.FacetComponent" />

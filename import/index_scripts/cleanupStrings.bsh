@@ -19,9 +19,7 @@ org.solrmarc.index.SolrIndexer indexer = null;
  * @return Call number label
  */
 public String replaceSlash(Record record, String fieldSpec) {
-
     String val = indexer.getFirstFieldVal(record, fieldSpec);
-
     if (val != null) {
         return val.replaceAll("/", "");
     } else {
