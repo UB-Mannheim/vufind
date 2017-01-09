@@ -16,3 +16,5 @@ solr/*
 
 # Ignore the local dir (is being kept in a separate repo and synced)
 local/*
+import/solrmarc.log
+import/solrmarc.log.1
