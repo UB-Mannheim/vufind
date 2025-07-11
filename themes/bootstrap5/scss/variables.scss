@@ -65,6 +65,15 @@ $home-facet-list-right-padding: 1rem !default; // Adds greater visual separation
 }
 
 @include color-mode(light, true) {
+  .navbar {
+    --bs-navbar-color: #{$primary};
+    --bs-navbar-active-color: #{#fff};
+    --bs-navbar-brand-color: #{$primary};
+    --bs-navbar-brand-hover-color: #{$primary};
+  }
+}
+
+@include color-mode(light, true) {
   table.table-striped {
     --bs-table-striped-bg: #f9f9f9;
   }
