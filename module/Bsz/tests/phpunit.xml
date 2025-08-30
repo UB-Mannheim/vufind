@@ -1,8 +1,0 @@
-<phpunit bootstrap="./bootstrap.php">
-    <testsuites>
-        <testsuite name="BszUnitTests">
-            <directory>../../Bsz/tests/unit-tests/src</directory>
-            <directory>../../BszTheme/tests/unit-tests/src</directory>
-        </testsuite>
-    </testsuites>
-</phpunit>
