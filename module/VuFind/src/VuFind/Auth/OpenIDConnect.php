@@ -374,27 +374,37 @@ class OpenIDConnect extends AbstractBase implements \VuFindHttp\HttpServiceAware
     public function logout($url)
     {
         $redirectUrl = $url;
+        $end_session_endpoint = false;
 
-        // Retrieve id_token from session
-        $idToken = $this->session->oidc_id_token ?? null;
-        if ($idToken === null) {
-            $this->logWarning('No id_token found in session data');
+        $logout = $this->getConfig('logout');
+
+        if (!$logout) {
+            // No logout configured, so don't logout from service provider.
+            $this->debug('no logout URL given');
+        } elseif (filter_var($logout, FILTER_VALIDATE_URL)) {
+            // A valid URL was configured, use it.
+            $end_session_endpoint = $logout;
         } else {
-            // Get end_session_endpoint from provider
+            // Get end_session_endpoint from provider.
             $provider = $this->getProvider();
-            if (empty($provider->end_session_endpoint)) {
-                $this->logWarning('No end_session_endpoint found in provider metadata');
+            $end_session_endpoint = $provider->end_session_endpoint;
+        }
+
+        if ($end_session_endpoint) {
+            // Retrieve id_token from session.
+            $idToken = $this->session->oidc_id_token ?? null;
+            if ($idToken === null) {
+                $this->logWarning('No id_token found in session data');
             } else {
-                $logoutUrl = $provider->end_session_endpoint;
                 $params = [
                     'id_token_hint' => $idToken,
                     'post_logout_redirect_uri' => $url,
                 ];
-                $redirectUrl = $logoutUrl . '?' . http_build_query($params);
+                $redirectUrl = $end_session_endpoint . '?' . http_build_query($params);
             }
         }
 
-        // Send back the redirect URL (possibly modified):
+        // Send back the redirect URL (possibly modified).
         return $redirectUrl;
     }
 
