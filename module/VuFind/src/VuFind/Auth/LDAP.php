@@ -102,7 +102,7 @@ class LDAP extends AbstractBase
      * Attempt to authenticate the current user. Throws exception if login fails.
      *
      * @param \Laminas\Http\PhpEnvironment\Request $request Request object containing
-     * account credentials.
+     *                                                      account credentials.
      *
      * @throws AuthException
      * @return UserEntityInterface Object representing logged-in user.
@@ -173,12 +173,12 @@ class LDAP extends AbstractBase
             $this->debug('Failed to set protocol version 3');
         }
 
-        // if the host parameter is not specified as ldaps://
+        // if the uri parameter is not specified as ldaps://
         // then (unless TLS is disabled) we need to initiate TLS so we
         // can have a secure connection over the standard LDAP port.
         $disableTls = isset($this->config->LDAP->disable_tls)
             && $this->config->LDAP->disable_tls;
-        if (stripos($host, 'ldaps://') === false && !$disableTls) {
+        if (!str_starts_with($uri, 'ldaps://') && !$disableTls) {
             $this->debug('Starting TLS');
             if (!@ldap_start_tls($connection)) {
                 $this->debug('TLS failed');
@@ -285,7 +285,8 @@ class LDAP extends AbstractBase
         $user = $this->getOrCreateUserByUsername($username);
 
         // Variable to hold catalog password (handled separately from other
-        // attributes since we need to pass it to saveUserAndCredentials method to store it):
+        // attributes since we need to pass it to saveUserAndCredentials
+        // method to store it):
         $catPassword = null;
 
         // Loop through LDAP response and map fields to database object based
