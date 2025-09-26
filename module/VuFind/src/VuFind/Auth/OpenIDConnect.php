@@ -68,7 +68,7 @@ class OpenIDConnect extends AbstractBase implements \VuFindHttp\HttpServiceAware
      *
      * @var object
      */
-    protected object $requestToken;
+    protected array $requestTokens = [];
 
     /**
      * OpenID Connect provider settings
@@ -418,8 +418,8 @@ class OpenIDConnect extends AbstractBase implements \VuFindHttp\HttpServiceAware
      */
     protected function getRequestToken(string $code): object
     {
-        if (isset($this->requestToken)) {
-            return $this->requestToken;
+        if ($this->requestTokens[$code] ?? false) {
+            return $this->requestTokens[$code];
         }
         $provider = $this->getProvider();
         $url = $provider->token_endpoint;
@@ -467,8 +467,8 @@ class OpenIDConnect extends AbstractBase implements \VuFindHttp\HttpServiceAware
             $this->logError('Failed to get request token: ' . ($json->error_description ?? $json->error));
             throw new AuthException('authentication_error_technical');
         }
-        $this->requestToken = $json;
-        return $this->requestToken;
+        $this->requestTokens[$code] = $json;
+        return $json;
     }
 
     /**
