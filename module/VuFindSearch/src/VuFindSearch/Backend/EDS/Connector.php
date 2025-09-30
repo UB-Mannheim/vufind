@@ -96,7 +96,7 @@ class Connector extends Base implements LoggerAwareInterface
         $method,
         $queryString,
         $headers,
-        ?$messageBody = null,
+        $messageBody = null,
         $messageFormat = 'application/json; charset=utf-8',
         $cacheable = true
     ) {
