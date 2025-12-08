@@ -1882,8 +1882,6 @@ class Alma extends AbstractBase implements
                     'id' => (string)$bib->mms_id,
                     'source' => 'Solr',
                     'callnumber' => '',
-                    'availability' => AvailabilityStatusInterface::STATUS_UNKNOWN,
-                    'location' => '',
                     'reserve' => 'N',
                 ];
                 // Physical
@@ -1968,9 +1966,6 @@ class Alma extends AbstractBase implements
                         );
                     }
                     $status[] = $item;
-                }
-                if (empty($status)) {
-                    $status[] = $tmpl;
                 }
                 $results[(string)$bib->mms_id] = $status;
             }
