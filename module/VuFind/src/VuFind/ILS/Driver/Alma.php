@@ -265,7 +265,7 @@ class Alma extends AbstractBase implements
      *
      * @return array Availability and status
      */
-    protected function getItemAvailabilityAndStatus(\SimpleXMLElement $item): array
+    protected function getItemAvailabilityAndStatus(SimpleXMLElement $item): array
     {
         // Check location type to status mappings first since they override
         // everything else:
