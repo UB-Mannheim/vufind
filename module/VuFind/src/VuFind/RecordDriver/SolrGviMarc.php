@@ -1,13 +1,14 @@
 <?php
 
-/*
+/**
+ * PHP version 8
+ *
  * Copyright 2020 (C) Bibliotheksservice-Zentrum Baden-
  * Württemberg, Konstanz, Germany
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2,
+ * as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +16,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * along with this program; if not, see
+ * <https://www.gnu.org/licenses/>.
  *
+ * @category VuFind
+ * @package  RecordDrivers
+ * @author   Cornelius Amzar <cornelius.amzar@bsz-bw.de>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
 
 namespace VuFind\RecordDriver;
@@ -26,8 +32,22 @@ namespace VuFind\RecordDriver;
 use VuFind\RecordDriver\Feature\IlsAwareTrait;
 use VuFind\RecordDriver\Feature\MarcReaderTrait;
 
+use function array_key_exists;
+use function count;
+use function in_array;
+use function is_array;
+use function is_object;
+use function is_string;
+use function strlen;
+
 /**
- * @author Cornelius Amzar <cornelius.amzar@bsz-bw.de>
+ * TODO: Add description
+ *
+ * @category VuFind
+ * @package  RecordDrivers
+ * @author   Cornelius Amzar <cornelius.amzar@bsz-bw.de>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
 class SolrGviMarc extends SolrMarc implements Constants
 {
@@ -48,6 +68,8 @@ class SolrGviMarc extends SolrMarc implements Constants
      * returned as an array of chunks, increasing from least specific to most
      * specific.
      *
+     * @param mixed $extended TODO: add description
+     *
      * @return array
      */
     public function getAllSubjectHeadings($extended = false): array
@@ -62,6 +84,8 @@ class SolrGviMarc extends SolrMarc implements Constants
      * Get subject headings associated with this record.  Each heading is
      * returned as an array of chunks, increasing from least specific to most
      * specific.
+     *
+     * @param array $fields TODO: add description
      *
      * @return array
      */
@@ -102,6 +126,11 @@ class SolrGviMarc extends SolrMarc implements Constants
         return array_unique($retval);
     }
 
+    /**
+     * TODO: Summary of getAllSubjectHeadingsFlattened
+     *
+     * @return array
+     */
     public function getAllSubjectHeadingsFlattened()
     {
         return $this->getAllSubjectHeadings();
@@ -152,7 +181,7 @@ class SolrGviMarc extends SolrMarc implements Constants
                 }
                 $gnd[$id] = [
                     'type' => 'gnd',
-                    'data' => $this->addDelimiterChars($tmp)
+                    'data' => $this->addDelimiterChars($tmp),
                 ];
             }
         }
@@ -176,11 +205,10 @@ class SolrGviMarc extends SolrMarc implements Constants
         return array_unique($return);
     }
 
-
     /**
      * Get an array with RVK shortcut as key and description as value (array)
      *
-     * @returns array
+     * @return array
      */
     public function getRVKNotations()
     {
@@ -227,6 +255,8 @@ class SolrGviMarc extends SolrMarc implements Constants
     }
 
     /**
+     * TODO: Summary for getFixSubjects
+     *
      * @param string $type all, main_topic, partial_aspect
      *
      * @return array
@@ -491,20 +521,20 @@ class SolrGviMarc extends SolrMarc implements Constants
             $arr['isbn'] = $isbn;
             $arr['ean'] = $ean;
             return $arr;
-        } //journals and other media  - almost always have no cover
-        else {
+        } else {
+            // journals and other media - almost always have no cover
             return false;
         }
     }
 
     /**
-     * return GTIN Code
+     * Get GTIN Code
      *
      * @return string
      */
     public function getGTIN()
     {
-        $gtin = $this->getFieldArray("024", ['a']);
+        $gtin = $this->getFieldArray('024', ['a']);
         return array_shift($gtin);
     }
 
@@ -592,15 +622,14 @@ class SolrGviMarc extends SolrMarc implements Constants
                     continue;
                 }
                 //TODO: Can this be deleted?
-//                if (is_object($sfz)) {
-//                    if (stripos($sfz->getData(), 'Kostenfrei') === false) {
-//                        continue;
-//                    }
-//                } else {
-//                    continue;
-//                }
+                //                if (is_object($sfz)) {
+                //                    if (stripos($sfz->getData(), 'Kostenfrei') === false) {
+                //                        continue;
+                //                    }
+                //                } else {
+                //                    continue;
+                //                }
             }
-
 
             $url['url'] = $this->getSubfield($field, 'u');
 
@@ -625,7 +654,7 @@ class SolrGviMarc extends SolrMarc implements Constants
                 $url['desc'] = $sfu;
             } elseif ($sfu = $this->getSubfield($field, 'y')) {
                 $url['desc'] = $sfu;
-            } elseif (($sfu = $this->getSubField($field, 'z')) && strpos('Kostenfrei', $sfu) !== false) {
+            } elseif (($sfu = $this->getSubField($field, 'z')) && str_contains('Kostenfrei', $sfu)) {
                 // x is marked as nonpublic!
                 $url['desc'] = 'Full Text';
             } elseif (($sfu = $this->getSubField($field, 'n'))) {
@@ -641,6 +670,8 @@ class SolrGviMarc extends SolrMarc implements Constants
     }
 
     /**
+     * TODO: Summary of getConsortium
+     *
      * @return string
      */
     public function getConsortium()
@@ -663,7 +694,7 @@ class SolrGviMarc extends SolrMarc implements Constants
         }
         $consortium_unique = array_unique($consortium);
 
-        $string = implode(", ", $consortium_unique);
+        $string = implode(', ', $consortium_unique);
         return $string;
     }
 
@@ -688,6 +719,8 @@ class SolrGviMarc extends SolrMarc implements Constants
     }
 
     /**
+     * TODO: Summary of getGroupField
+     *
      * @return string
      */
     public function getGroupField()
@@ -752,6 +785,11 @@ class SolrGviMarc extends SolrMarc implements Constants
         return true;
     }
 
+    /**
+     * TODO: Summary of getNetwork
+     *
+     * @return string
+     */
     public function getNetwork()
     {
         return 'NoNetwork';
@@ -822,6 +860,8 @@ class SolrGviMarc extends SolrMarc implements Constants
 
     /**
      * Return system requirements
+     *
+     * @return array
      */
     public function getSystemDetails()
     {
@@ -839,6 +879,11 @@ class SolrGviMarc extends SolrMarc implements Constants
         return $this->getContainerIds();
     }
 
+    /**
+     * TODO: Summary of getRelatedEditions
+     *
+     * @return array<array>
+     */
     public function getRelatedEditions()
     {
         $related = [];
@@ -890,14 +935,14 @@ class SolrGviMarc extends SolrMarc implements Constants
     {
         $fields = [
             830 => ['v'],
-            773 => ['g']
+            773 => ['g'],
         ];
-        $volumes = preg_replace("/[\/,]$/", "", $this->getFieldsArray($fields));
+        $volumes = preg_replace("/[\/,]$/", '', $this->getFieldsArray($fields));
         return array_shift($volumes);
     }
 
     /**
-     * get local Urls from 924|k and the correspondig linklabel 924|l
+     * Get local Urls from 924|k and the correspondig linklabel 924|l
      * - $924 is repeatable
      * - |k is repeatable, |l aswell
      * - we can have more than one isil ?is this true? maybe allways the first isil
@@ -948,7 +993,7 @@ class SolrGviMarc extends SolrMarc implements Constants
                 $tmp = [
                     'isil' => $isil,
                     'url' => $link,
-                    'label' => $label
+                    'label' => $label,
                 ];
             }
             $addedUrls[] = $link;
@@ -1001,6 +1046,11 @@ class SolrGviMarc extends SolrMarc implements Constants
         return $holdings;
     }
 
+    /**
+     * TODO: Summary of getHoldingIsils
+     *
+     * @return mixed
+     */
     public function getHoldingIsils()
     {
         return $this->getHoldingIsilsFromField('924', 'b');
@@ -1015,9 +1065,9 @@ class SolrGviMarc extends SolrMarc implements Constants
     {
         $fields = [
             830 => ['v'],
-            773 => ['g']
+            773 => ['g'],
         ];
-        $volumes = preg_replace("/[\/,]$/", "", $this->getFieldsArray($fields));
+        $volumes = preg_replace("/[\/,]$/", '', $this->getFieldsArray($fields));
         return array_shift($volumes);
     }
 
@@ -1049,19 +1099,21 @@ class SolrGviMarc extends SolrMarc implements Constants
     }
 
     /**
-     *  Scale of a map
+     * Scale of a map
+     *
+     * @return mixed
      */
     public function getScale()
     {
-        $scale = $this->getFieldArray("255", ['a']);
+        $scale = $this->getFieldArray('255', ['a']);
         if (empty($scale)) {
-            $scale = $this->getFieldArray("034", ['b']);
+            $scale = $this->getFieldArray('034', ['b']);
         }
         return array_shift($scale);
     }
 
     /**
-     * get 830|w if it exists with (DE-627)-Prefix
+     * Get 830|w if it exists with (DE-627)-Prefix
      *
      * @return array
      */
@@ -1135,7 +1187,7 @@ class SolrGviMarc extends SolrMarc implements Constants
     }
 
     /**
-     * get 787|w if it exists with (DE-627)-Prefix
+     * Get 787|w if it exists with (DE-627)-Prefix
      *
      * @return array
      */
@@ -1156,6 +1208,11 @@ class SolrGviMarc extends SolrMarc implements Constants
         return $array_clean;
     }
 
+    /**
+     * TODO: Summary of getBookOpenUrlParams
+     *
+     * @return array
+     */
     protected function getBookOpenUrlParams()
     {
         $params = $this->getDefaultOpenUrlParams();
@@ -1195,7 +1252,7 @@ class SolrGviMarc extends SolrMarc implements Constants
     }
 
     /**
-     * returns all authors from 100 or 700 without life data
+     * Returns all authors from 100 or 700 without life data
      *
      * @return array
      */
@@ -1218,7 +1275,7 @@ class SolrGviMarc extends SolrMarc implements Constants
         $fields = [
             245 => ['p'],
         ];
-        $volumes = preg_replace("/\/$/", "", $this->getFieldsArray($fields));
+        $volumes = preg_replace("/\/$/", '', $this->getFieldsArray($fields));
         return array_shift($volumes);
     }
 
@@ -1375,6 +1432,8 @@ class SolrGviMarc extends SolrMarc implements Constants
     }
 
     /**
+     * TODO: Summary of isEPflicht
+     *
      * @return bool
      */
     public function isEPflicht(): bool
@@ -1383,7 +1442,11 @@ class SolrGviMarc extends SolrMarc implements Constants
         return in_array('EPF-BW-GESAMT', $fields, true) && !$this->isBLB();
     }
 
-
+    /**
+     * TODO: Summary of isBLB
+     *
+     * @return bool
+     */
     private function isBLB(): bool
     {
         $f583 = $this->getFields('583');
@@ -1397,8 +1460,9 @@ class SolrGviMarc extends SolrMarc implements Constants
         return false;
     }
 
-
     /**
+     * TODO: Summary of isLFER
+     *
      * @return bool
      */
     public function isLFER(): bool
@@ -1413,6 +1477,11 @@ class SolrGviMarc extends SolrMarc implements Constants
         return false;
     }
 
+    /**
+     * TODO: Summary of canOrderAnyways
+     *
+     * @return bool
+     */
     public function canOrderAnyways(): bool
     {
         $isils = $this->mainConfig->Site->order_ill ?? '';
