@@ -730,7 +730,7 @@ class SolrGviMarc extends SolrMarc implements Constants
     /**
      * On electronic Articles, we do not need to query DAIA.
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsAjaxStatus()
     {
@@ -1024,7 +1024,7 @@ class SolrGviMarc extends SolrMarc implements Constants
     /**
      * Has this record holdings in field 924
      *
-     * @return boolean
+     * @return bool
      */
     public function hasLocalHoldings()
     {
