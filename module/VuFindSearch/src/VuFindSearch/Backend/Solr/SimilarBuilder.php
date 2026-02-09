@@ -132,7 +132,6 @@ class SimilarBuilder implements SimilarBuilderInterface
                 'q',
                 sprintf('%s:"%s"', $this->uniqueKey, addcslashes($id, '"'))
             );
-            $params->set('defType', 'morelikethis');
         }
         if (null === $params->get('rows')) {
             $params->set('rows', $this->count);
