@@ -222,11 +222,10 @@ class Connector implements \Psr\Log\LoggerAwareInterface
      */
     public function similar($id, ParamBag $params)
     {
-        $handler = $this->map->getHandler(__FUNCTION__);
         $this->map->prepare(__FUNCTION__, $params);
 
         try {
-            return $this->query($handler, $params, true);
+            return $this->query('morelikethis', $params, true);
         } catch (RequestErrorException $e) {
             // If Solr was unable to fetch the record, just act like we have no similar records:
             if (str_contains($e->getMessage(), 'Could not fetch document with id')) {
