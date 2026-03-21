@@ -71,16 +71,6 @@ module.exports = function(grunt) {
           quietDeps: true
         }
       }
-    },
-
-    watch: {
-      options: {
-        atBegin: true
-      },
-      scss: {
-        files: 'themes/*/scss/**/*.scss',
-        tasks: ['scss']
-      }
     }
   };
 
@@ -100,9 +90,7 @@ module.exports = function(grunt) {
     grunt.log.writeln(`\nHello! Here are your grunt command options:
 
     - grunt scss        = compile and map all themes' SASS files to css.
-    - grunt check:scss  = check all themes' SASS files.
-    - grunt watch:[cmd] = continuous monitor source files and run command when changes are detected.
-    - grunt watch:scss`);
+    - grunt check:scss  = check all themes' SASS files.`);
   });
 
   function getSassConfig(additionalOptions, checkOnly) {
