@@ -5,4 +5,33 @@
       <?=$this->layout()->searchbox ?>
     </div>
   </div>
+<!-- Add this to your header, e.g., near the search bar -->
+<div class="form-check form-switch ms-3">
+  <input class="form-check-input" type="checkbox" id="darkModeToggle" aria-label="Toggle dark mode">
+  <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+</div>
+
+<script>
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const htmlElement = document.documentElement;
+
+  // Set initial state based on localStorage or OS preference
+  const isDarkMode = localStorage.getItem('vufind-dark-mode') === 'true' ||
+                     window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (isDarkMode) {
+    htmlElement.setAttribute('data-bs-theme', 'dark');
+    darkModeToggle.checked = true;
+  }
+
+  // Toggle dark mode on click
+  darkModeToggle.addEventListener('change', () => {
+    if (darkModeToggle.checked) {
+      htmlElement.setAttribute('data-bs-theme', 'dark');
+      localStorage.setItem('vufind-dark-mode', 'true');
+    } else {
+      htmlElement.removeAttribute('data-bs-theme');
+      localStorage.setItem('vufind-dark-mode', 'false');
+    }
+  });
+</script>
 <?php endif; ?>
