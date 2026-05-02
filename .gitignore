@@ -35,3 +35,4 @@ local/config/vufind/*
 
 # Ignore compiled files.
 compiled.css
+compiled.css.map
