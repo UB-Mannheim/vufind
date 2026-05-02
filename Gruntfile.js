@@ -60,7 +60,18 @@ module.exports = function(grunt) {
     'scss': {
       'dart-sass': {
         options: {
-          outputStyle: 'compressed',
+          //outputStyle: 'compressed',
+          outputStyle: 'expanded',
+          sourceMap: true,
+          quietDeps: true
+        }
+      }
+    },
+    'scss-debug': {
+      'dart-sass': {
+        options: {
+          outputStyle: 'expanded',
+          sourceMap: true,
           quietDeps: true
         }
       }
