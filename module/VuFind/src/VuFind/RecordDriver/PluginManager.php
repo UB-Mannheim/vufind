@@ -57,6 +57,8 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
         'epf' => EPF::class,
         'gvi' => GVIDefault::class,
         'gvidefault' => GVIDefault::class,
+        'kxpz' => KXPZDefault::class,
+        'kxpzdefault' => KXPZDefault::class,
         'libguides' => LibGuides::class,
         'libguidesaz' => LibGuidesAZ::class,
         'missing' => Missing::class,
@@ -100,6 +102,7 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
         EIT::class => NameBasedConfigFactory::class,
         EPF::class => NameBasedConfigFactory::class,
         GVIDefault::class => GVIDefaultFactory::class,
+        KXPZDefault::class => KXPZDefaultFactory::class,
         LibGuides::class => InvokableFactory::class,
         LibGuidesAZ::class => InvokableFactory::class,
         Missing::class => AbstractBaseFactory::class,
@@ -179,6 +182,19 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
     public function getGVIRecord($data, $defaultKeySuffix = 'Default')
     {
         return $this->getSolrRecord($data, 'GVI', $defaultKeySuffix);
+    }
+
+    /**
+     * Convenience method to retrieve a populated KXPZ record driver.
+     *
+     * @param array  $data             Raw Solr data
+     * @param string $defaultKeySuffix Default key suffix
+     *
+     * @return AbstractBase
+     */
+    public function getKXPZRecord($data, $defaultKeySuffix = 'Default')
+    {
+        return $this->getSolrRecord($data, 'KXPZ', $defaultKeySuffix);
     }
 
     /**
