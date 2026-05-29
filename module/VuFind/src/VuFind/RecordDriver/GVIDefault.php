@@ -195,7 +195,7 @@ class GVIDefault extends SolrMarc
     /**
      * Get an array of all ISBNs associated with the record (may be empty).
      *
-     * Reads from MARC 020, subfield a. Strips dashes for normalisation.
+     * Reads from MARC 020, subfield a. Strips dashes for normalization.
      *
      * @return array
      */
