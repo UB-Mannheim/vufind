@@ -248,4 +248,29 @@ class GVIDefault extends SolrMarc
         }
         return array_unique($retVal);
     }
+
+    /**
+     * Return the first valid DOI found in the record (false if none).
+     *
+     * Reads from MARC 024 where indicator1=7 and subfield 2 equals 'doi',
+     * since the GVI Solr schema does not include the doi_str_mv field.
+     *
+     * @return string|false
+     */
+    public function getCleanDOI()
+    {
+        $fields = $this->getMarcReader()->getFields('024');
+        foreach ($fields as $field) {
+            if ($field['i1'] === '7') {
+                $source = $this->getSubfield($field, '2');
+                if (strtolower(trim($source)) === 'doi') {
+                    $doi = $this->getSubfield($field, 'a');
+                    if ($doi) {
+                        return $doi;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
