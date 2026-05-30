@@ -262,12 +262,9 @@ class GVIDefault extends SolrMarc
         $fields = $this->getMarcReader()->getFields('024');
         foreach ($fields as $field) {
             if ($field['i1'] === '7') {
-                $source = $this->getSubfield($field, '2');
-                if (strtolower(trim($source)) === 'doi') {
-                    $doi = $this->getSubfield($field, 'a');
-                    if ($doi) {
-                        return $doi;
-                    }
+                $source = strtolower(trim((string)$this->getSubfield($field, '2')));
+                if ($source === 'doi' && $doi = $this->getSubfield($field, 'a')) {
+                    return $doi;
                 }
             }
         }
