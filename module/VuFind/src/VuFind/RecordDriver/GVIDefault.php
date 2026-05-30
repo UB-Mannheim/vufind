@@ -248,29 +248,4 @@ class GVIDefault extends SolrMarc
         }
         return array_unique($retVal);
     }
-
-    /**
-     * Get an array of DOIs for the record.
-     *
-     * Reads from MARC 024 where indicator1=7 and subfield 2 equals 'doi'.
-     *
-     * @return array
-     */
-    public function getDOIs()
-    {
-        $retVal = [];
-        $fields = $this->getMarcReader()->getFields('024');
-        foreach ($fields as $field) {
-            if ($field['i1'] === '7') {
-                $source = $this->getSubfield($field, '2');
-                if (strtolower(trim($source)) === 'doi') {
-                    $doi = $this->getSubfield($field, 'a');
-                    if ($doi) {
-                        $retVal[] = $doi;
-                    }
-                }
-            }
-        }
-        return $retVal;
-    }
 }
