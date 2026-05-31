@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GVI Record Controller.
+ * Abstract base class for GVI actions.
  *
  * PHP version 8
  *
@@ -13,7 +13,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -21,36 +21,35 @@
  * <https://www.gnu.org/licenses/>.
  *
  * @category VuFind
- * @package  Controller
- * @author   Stefan Weil <sw@weilnetz.de>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
- */
-
-namespace VuFind\Controller;
-
-/**
- * GVI Record Controller.
- *
- * @category VuFind
- * @package  Controller
+ * @package  Action
  * @author   Stefan Weil <sw@weilnetz.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
-class GVIrecordController extends AbstractRecord
+
+namespace VuFind\Action\GVI;
+
+use VuFind\Action\Search\AbstractSearchAndResultsAction;
+
+/**
+ * Abstract base class for GVI actions.
+ *
+ * @category VuFind
+ * @package  Action
+ * @author   Stefan Weil <sw@weilnetz.de>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org Main Site
+ */
+abstract class AbstractGVISearchAndResultsAction extends AbstractSearchAndResultsAction
 {
     /**
-     * Source identifier to use for records.
+     * Initialize the action.
      *
-     * @var string
+     * @return void
      */
-    protected $sourceId = 'GVI';
-
-    /**
-     * Fallback default tab for records.
-     *
-     * @var string
-     */
-    protected $fallbackDefaultTab = 'Description';
+    protected function init(): void
+    {
+        $this->searchClassId = 'GVI';
+        parent::init();
+    }
 }

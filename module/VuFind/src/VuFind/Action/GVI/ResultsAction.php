@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GVI Controller.
+ * GVI results action.
  *
  * PHP version 8
  *
@@ -13,7 +13,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -21,49 +21,56 @@
  * <https://www.gnu.org/licenses/>.
  *
  * @category VuFind
- * @package  Controller
- * @author   Stefan Weil <sw@weilnetz.de>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
- */
-
-namespace VuFind\Controller;
-
-/**
- * GVI Controller.
- *
- * @category VuFind
- * @package  Controller
+ * @package  Action
  * @author   Stefan Weil <sw@weilnetz.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
-class GVIController extends AbstractSolrSearch
+
+namespace VuFind\Action\GVI;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use VuFind\ActionHelper\ForwardHelper;
+
+/**
+ * GVI results action.
+ *
+ * @category VuFind
+ * @package  Action
+ * @author   Stefan Weil <sw@weilnetz.de>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org Main Site
+ */
+class ResultsAction extends AbstractGVISearchAndResultsAction
 {
     /**
-     * Search class family to use.
+     * Display results.
      *
-     * @var string
-     */
-    protected $searchClassId = 'GVI';
-
-    /**
-     * Results action.
+     * @param ServerRequestInterface $request  Server request
+     * @param ResponseInterface      $response Response
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    public function resultsAction()
-    {
+    public function action(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+    ): ResponseInterface {
         // Special case -- redirect tag searches.
-        if ($this->params()->fromQuery('type') == 'tag') {
+        if ($this->getQueryParam('type') == 'tag') {
             // Because we're coming in from a search, we want to do a fuzzy
             // tag search, not an exact search like we would when linking to a
             // specific tag name.
-            $this->getRequest()->getQuery()->set('fuzzy', 'true');
-            return $this->forwardTo('Tag', 'Home');
+            $query = $request->getQueryParams();
+            $query['fuzzy'] = 'true';
+            return $this->getHelper(ForwardHelper::class)->forwardTo(
+                $request->withQueryParams($query),
+                $response,
+                'Tag/Home'
+            );
         }
 
         // Default case -- standard behavior.
-        return parent::resultsAction();
+        return $this->renderSearchResults();
     }
 }
