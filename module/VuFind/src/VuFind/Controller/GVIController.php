@@ -29,8 +29,6 @@
 
 namespace VuFind\Controller;
 
-use Laminas\ServiceManager\ServiceLocatorInterface;
-
 /**
  * GVI Controller.
  *
@@ -43,15 +41,11 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 class GVIController extends AbstractSolrSearch
 {
     /**
-     * Constructor.
+     * Search class family to use.
      *
-     * @param ServiceLocatorInterface $sm Service locator
+     * @var string
      */
-    public function __construct(ServiceLocatorInterface $sm)
-    {
-        $this->searchClassId = 'GVI';
-        parent::__construct($sm);
-    }
+    protected $searchClassId = 'GVI';
 
     /**
      * Results action.
