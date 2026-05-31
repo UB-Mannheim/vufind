@@ -29,8 +29,6 @@
 
 namespace VuFind\Controller;
 
-use Laminas\ServiceManager\ServiceLocatorInterface;
-
 /**
  * GVI Record Controller.
  *
@@ -43,14 +41,16 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 class GVIrecordController extends AbstractRecord
 {
     /**
-     * Constructor.
+     * Source identifier to use for records.
      *
-     * @param ServiceLocatorInterface $sm Service locator
+     * @var string
      */
-    public function __construct(ServiceLocatorInterface $sm)
-    {
-        $this->sourceId = 'GVI';
-        $this->fallbackDefaultTab = 'Description';
-        parent::__construct($sm);
-    }
+    protected $sourceId = 'GVI';
+
+    /**
+     * Fallback default tab for records.
+     *
+     * @var string
+     */
+    protected $fallbackDefaultTab = 'Description';
 }
