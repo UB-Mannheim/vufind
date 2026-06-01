@@ -45,13 +45,21 @@
   }
 
   $toggleAttrs = array_merge($defaultAttrs, $this->toggleAttrs ?? []);
+
+  $toggleLabel = $this->transEsc($this->toggleLabel);
+  if ($this->toggleLabelIconOnly) {
+    $toggleLabel = '<span class="sr-only">' . $toggleLabel . '</span>';
+  }
+  if ($this->toggleLabelIcon) {
+    $toggleLabel = $this->icon($this->toggleLabelIcon) . $toggleLabel;
+  }
 ?>
 
 <?php ob_start(); ?>
   <?=$this
       ->makeTag(
           $toggleTag,
-          $this->transEsc($this->toggleLabel) . $this->icon('dropdown-open'),
+          $toggleLabel . $this->icon('dropdown-caret'),
           $toggleAttrs,
           ['escapeContent' => false]
       )
@@ -73,6 +81,7 @@
           <?php if ($setParams = $current['setQueryParams'] ?? null): ?> data-click-set-query-params="<?=$this->escapeHtmlAttr(http_build_query($setParams))?>"<?php endif; ?>
           rel="nofollow"
         >
+          <?php if ($current['icon'] ?? false): ?> <?=$this->icon($current['icon']) ?> <?php endif; ?>
           <span><?=$this->transEsc($current['label']) ?></span>
           <?php if ($description = $current['description'] ?? false): ?>
             <span class="description"><?=$this->transEsc($description)?></span>
