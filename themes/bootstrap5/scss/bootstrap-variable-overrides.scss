@@ -58,8 +58,8 @@ $enable-caret:                      false !default;
 $link-hover-decoration:             underline !default;
 $icon-link-underline-offset:        inherit !default;
 
-// Disable dark mode for now:
-$enable-dark-mode:                  false !default;
+// Enable dark mode:
+$enable-dark-mode:                  true !default;
 
 // Disable smooth scroll for now (doesn't interact well with Mink tests):
 $enable-smooth-scroll:              false !default;
