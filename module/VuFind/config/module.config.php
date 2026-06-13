@@ -527,7 +527,11 @@ $config = [
         // This section contains service manager configurations for all VuFind
         // pluggable components:
         'plugin_managers' => [
-            'action' => [ /* see VuFind\Action\PluginManager for details */],
+            'action' => [
+                'category_aliases' => [
+                    'Gvi' => 'GVI',
+                    'Gviewecord' => 'GVI',
+                ], /* see VuFind\Action\PluginManager for details */],
             'actionhelper' => [ /* see VuFind\ActionHelper\PluginManager for details */ ],
             'ajaxhandler' => [ /* see VuFind\AjaxHandler\PluginManager for defaults */ ],
             'auth' => [ /* see VuFind\Auth\PluginManager for defaults */ ],
