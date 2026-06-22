@@ -31,3 +31,6 @@ local/DirLocations.ini
 local/config/vufind.bak
 local/config/vufind/*
 !local/config/vufind/README.txt
+
+# local theme
+themes/ubma
