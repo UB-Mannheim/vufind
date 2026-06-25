@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c7e5dc66abcb2383b92a45f18ae0e6e",
+    "content-hash": "7058c152fea1b58fd0aef7e9187d8875",
     "packages": [
         {
             "name": "ahand/mobileesp",
@@ -14061,25 +14061,27 @@
         },
         {
             "name": "pietercolpaert/hardf",
-            "version": "0.5.0",
+            "version": "0.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pietercolpaert/hardf.git",
-                "reference": "8dbfb3104ab70e7d43f36016b8ed35e3666ff18c"
+                "reference": "bc07d4dfd034c57bdbc50d20e86b36be19ec0ddb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pietercolpaert/hardf/zipball/8dbfb3104ab70e7d43f36016b8ed35e3666ff18c",
-                "reference": "8dbfb3104ab70e7d43f36016b8ed35e3666ff18c",
+                "url": "https://api.github.com/repos/pietercolpaert/hardf/zipball/bc07d4dfd034c57bdbc50d20e86b36be19ec0ddb",
+                "reference": "bc07d4dfd034c57bdbc50d20e86b36be19ec0ddb",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1|^8.0"
             },
             "require-dev": {
+                "easyrdf/easyrdf": "^1.1",
                 "friendsofphp/php-cs-fixer": "*",
-                "phpstan/phpstan": "^0.12.36",
-                "phpunit/phpunit": "^7 || ^8 || ^9"
+                "phpstan/phpstan": "^2.2",
+                "phpunit/phpunit": "^7 || ^8 || ^9",
+                "semsol/arc2": "^3.1"
             },
             "type": "library",
             "autoload": {
@@ -14097,12 +14099,6 @@
                     "email": "pieter.colpaert@ugent.be",
                     "homepage": "https://pietercolpaert.be",
                     "role": "developer"
-                },
-                {
-                    "name": "Ruben Verborgh",
-                    "email": "ruben.verborgh@ugent.be",
-                    "homepage": "https://ruben.verborgh.org",
-                    "role": "developer"
                 }
             ],
             "description": "A fast parser for RDF serializations such as turtle, n-triples, n-quads, trig and N3",
@@ -14118,6 +14114,7 @@
                 "open data",
                 "quads",
                 "rdf1.1",
+                "rdf1.2",
                 "streaming",
                 "trig"
             ],
@@ -14125,7 +14122,7 @@
                 "issues": "https://github.com/pietercolpaert/hardf/issues",
                 "source": "https://github.com/pietercolpaert/hardf"
             },
-            "time": "2024-02-28T12:25:10+00:00"
+            "time": "2026-06-03T18:57:18+00:00"
         },
         {
             "name": "react/cache",
