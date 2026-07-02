@@ -32,5 +32,6 @@ local/config/vufind.bak
 local/config/vufind/*
 !local/config/vufind/README.txt
 
-# local theme
+# local customizations
 themes/ubma
+module/Ubma
