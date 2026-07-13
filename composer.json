@@ -25,7 +25,8 @@
             "VuFindConsole\\": ["module/VuFindConsole/src/VuFindConsole", "module/VuFindConsole"],
             "VuFindDevTools\\": ["module/VuFindDevTools/src/VuFindDevTools", "module/VuFindDevTools"],
             "VuFindSearch\\": ["module/VuFindSearch/src/VuFindSearch", "module/VuFindSearch"],
-            "VuFindTheme\\": ["module/VuFindTheme/src/VuFindTheme", "module/VuFindTheme"]
+            "VuFindTheme\\": ["module/VuFindTheme/src/VuFindTheme", "module/VuFindTheme"],
+            "Ubma\\": ["module/Ubma/src/Ubma", "module/Ubma"]
         },
         "psr-0": {
             "minSO": "module/VuFind/src/VuFind/Search"
