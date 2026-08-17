@@ -318,6 +318,7 @@ $config = [
             'VuFind\Controller\Plugin\ILLRequests' => 'VuFind\Controller\Plugin\AbstractRequestBaseFactory',
             'VuFind\Controller\Plugin\Permission' => 'VuFind\Controller\Plugin\PermissionFactory',
             'VuFind\Controller\Plugin\StorageRetrievalRequests' => 'VuFind\Controller\Plugin\AbstractRequestBaseFactory',
+            'VuFind\Controller\Plugin\DigitizationRequests' => 'VuFind\Controller\Plugin\AbstractRequestBaseFactory',
         ],
         'initializers' => [
             'VuFind\ServiceManager\ServiceInitializer',
@@ -327,6 +328,7 @@ $config = [
             'ILLRequests' => 'VuFind\Controller\Plugin\ILLRequests',
             'permission' => 'VuFind\Controller\Plugin\Permission',
             'storageRetrievalRequests' => 'VuFind\Controller\Plugin\StorageRetrievalRequests',
+            'digitizationRequests' => 'VuFind\Controller\Plugin\DigitizationRequests',
         ],
     ],
     'service_manager' => [
@@ -340,6 +342,7 @@ $config = [
             \VuFind\I18n\Locale\LocaleSettings::class => \VuFind\Service\ServiceWithConfigIniFactory::class,
             \VuFind\ILS\Logic\Holds::class => \VuFind\ILS\Logic\LogicFactory::class,
             \VuFind\ILS\Logic\TitleHolds::class => \VuFind\ILS\Logic\LogicFactory::class,
+            \VuFind\ILS\Logic\TitleDigitization::class => \VuFind\ILS\Logic\LogicFactory::class,
             \VuFind\Record\Router::class => \VuFind\Service\ServiceWithConfigIniFactory::class,
             \VuFind\SMS\SMSInterface::class => \VuFind\SMS\Factory::class,
             \VuFind\UrlShortener\UrlShortenerInterface::class => \VuFind\UrlShortener\ServiceFactory::class,
@@ -392,6 +395,7 @@ $config = [
             'VuFind\ILSHoldLogic' => 'VuFind\ILS\Logic\Holds',
             'VuFind\ILSHoldSettings' => 'VuFind\ILS\HoldSettings',
             'VuFind\ILSTitleHoldLogic' => 'VuFind\ILS\Logic\TitleHolds',
+            'VuFind\ILSTitleDigitizationLogic' => 'VuFind\ILS\Logic\TitleDigitization',
             'VuFind\IpAddressUtils' => 'VuFind\Net\IpAddressUtils',
             'VuFind\Logger' => 'VuFind\Log\Logger',
             'VuFind\Mailer' => 'VuFind\Mailer\Mailer',

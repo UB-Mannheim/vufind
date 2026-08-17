@@ -50,6 +50,7 @@ class RecordController extends AbstractRecord
     use HoldsTrait;
     use ILLRequestsTrait;
     use StorageRetrievalRequestsTrait;
+    use DigitizationTrait;
 
     /**
      * Constructor.

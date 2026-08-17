@@ -76,22 +76,32 @@ trait IlsAwareTrait
     protected $titleHoldLogic = null;
 
     /**
+     * Title digitization logic.
+     *
+     * @var \VuFind\ILS\Logic\TitleDigitization
+     */
+    protected $titleDigitizationLogic = null;
+
+    /**
      * Attach an ILS connection and related logic to the driver.
      *
-     * @param \VuFind\ILS\Connection       $ils            ILS connection
-     * @param \VuFind\ILS\Logic\Holds      $holdLogic      Hold logic handler
-     * @param \VuFind\ILS\Logic\TitleHolds $titleHoldLogic Title hold logic handler
+     * @param \VuFind\ILS\Connection       $ils                   ILS connection
+     * @param \VuFind\ILS\Logic\Holds      $holdLogic             Hold logic handler
+     * @param \VuFind\ILS\Logic\TitleHolds $titleHoldLogic        Title hold logic handler
+     * @param \VuFind\ILS\Logic\TitleDigitization $titleDigitizationLogic Title digitization handler
      *
      * @return void
      */
     public function attachILS(
         \VuFind\ILS\Connection $ils,
         \VuFind\ILS\Logic\Holds $holdLogic,
-        \VuFind\ILS\Logic\TitleHolds $titleHoldLogic
+        \VuFind\ILS\Logic\TitleHolds $titleHoldLogic,
+        \VuFind\ILS\Logic\TitleDigitization $titleDigitizationLogic = null
     ) {
         $this->ils = $ils;
         $this->holdLogic = $holdLogic;
         $this->titleHoldLogic = $titleHoldLogic;
+        $this->titleDigitizationLogic = $titleDigitizationLogic;
     }
 
     /**
@@ -151,6 +161,27 @@ trait IlsAwareTrait
                 if ($this->ils->getTitleHoldsMode() != 'disabled') {
                     return $this->titleHoldLogic->getHold($this->getUniqueID());
                 }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get a link for placing a title or item level digitization request.
+     *
+     * @param string $level Request level ('title' or 'item')
+     *
+     * @return mixed A url if a request is possible, boolean false if not
+     */
+    public function getRealTimeDigitizationRequest($level = 'title')
+    {
+        if ($this->hasILS() && $this->titleDigitizationLogic) {
+            if ($this->ils->getTitleDigitizationMode() != 'disabled') {
+                return $this->titleDigitizationLogic->getRequest(
+                    $this->getUniqueID(),
+                    $level
+                );
             }
         }
 

@@ -101,6 +101,13 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
     protected $titleHoldsMode = 'disabled';
 
     /**
+     * Title-level digitization mode.
+     *
+     * @var string
+     */
+    protected $titleDigitizationMode = 'disabled';
+
+    /**
      * Is the current ILS driver failing?
      *
      * @var bool
@@ -177,6 +184,20 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
     {
         $this->holdsMode = $settings->getHoldsMode();
         $this->titleHoldsMode = $settings->getTitleHoldsMode();
+        $this->titleDigitizationMode = $settings->getTitleDigitizationMode();
+        return $this;
+    }
+
+    /**
+     * Set the digitization configuration for the connection.
+     *
+     * @param \VuFind\ILS\HoldSettings $settings Hold settings
+     *
+     * @return Connection
+     */
+    public function setDigitizationConfig($settings)
+    {
+        $this->titleDigitizationMode = $settings->getTitleDigitizationMode();
         return $this;
     }
 
@@ -464,6 +485,74 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
             && $this->checkCapability('getCancelHoldLink', [$params ?: []])
         ) {
             $response = ['function' => 'getCancelHoldLink'];
+        }
+        return $response;
+    }
+
+    /**
+     * Check Digitization.
+     *
+     * A support method for checkFunction(). This is responsible for checking
+     * the driver configuration to determine if the system supports Digitization
+     * requests.
+     *
+     * @param array $functionConfig The digitization configuration values
+     * @param array $params         An array of function-specific params (or null)
+     *
+     * @return array
+     */
+    protected function checkMethodDigitization(array $functionConfig, array $params): array
+    {
+        $response = [];
+
+        if (
+            $this->getTitleDigitizationMode() != 'disabled'
+            && $this->checkCapability('placeDigitizationRequest', [$params ?: []])
+            && isset($functionConfig['HMACKeys'])
+        ) {
+            $response = ['function' => 'placeDigitizationRequest'];
+            $response['HMACKeys'] = explode(':', $functionConfig['HMACKeys']);
+            if (isset($functionConfig['extraFields'])) {
+                $response['extraFields'] = $functionConfig['extraFields'];
+            }
+            if (isset($functionConfig['defaultRequiredDate'])) {
+                $response['defaultRequiredDate']
+                    = $functionConfig['defaultRequiredDate'];
+            }
+            $response['helpText']
+                = $this->getHelpText($functionConfig['helpText'] ?? '');
+        }
+        return $response;
+    }
+
+    /**
+     * Check Cancel Digitization Requests.
+     *
+     * A support method for checkFunction(). This is responsible for checking
+     * if the system supports cancelling Digitization Requests.
+     *
+     * @param array $functionConfig The Cancel function configuration values
+     * @param array $params         An array of function-specific params (or null)
+     *
+     * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    protected function checkMethodcancelDigitization(array $functionConfig, array $params): array
+    {
+        $response = [];
+
+        if (
+            isset($this->config->cancel_digitization_requests_enabled)
+            && $this->config->cancel_digitization_requests_enabled
+        ) {
+            $check = $this->checkCapability(
+                'cancelDigitizationRequests',
+                [$params ?: []]
+            );
+            if ($check) {
+                $response = ['function' => 'cancelDigitizationRequests'];
+            }
         }
         return $response;
     }
@@ -969,6 +1058,40 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
     }
 
     /**
+     * Check Digitization Request is Valid.
+     *
+     * This is responsible for checking if a digitization request is valid
+     *
+     * @param string $id     A Bibliographic ID
+     * @param array  $data   Collected Data
+     * @param array  $patron Patron related data
+     *
+     * @return mixed The result of the checkDigitizationRequestIsValid
+     * function if it exists, false if it does not
+     */
+    public function checkDigitizationRequestIsValid($id, $data, $patron)
+    {
+        try {
+            $params = [$id, $data, $patron];
+            if ($this->checkCapability('checkDigitizationRequestIsValid', $params)) {
+                return $this->getDriver()->checkDigitizationRequestIsValid(
+                    $id,
+                    $data,
+                    $patron
+                );
+            }
+        } catch (\Exception $e) {
+            if ($this->failOverToNoILS($e)) {
+                return call_user_func_array([$this, __METHOD__], func_get_args());
+            }
+            throw $e;
+        }
+        // If the driver has no checkDigitizationRequestIsValid method, we
+        // will assume that the request is not valid
+        return false;
+    }
+
+    /**
      * Get Holds Mode.
      *
      * This is responsible for returning the holds mode
@@ -1024,6 +1147,18 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
     public function getTitleHoldsMode()
     {
         return $this->titleHoldsMode;
+    }
+
+    /**
+     * Get Title Digitization Mode.
+     *
+     * This is responsible for returning the Title Digitization mode
+     *
+     * @return string The Title Digitization mode
+     */
+    public function getTitleDigitizationMode()
+    {
+        return $this->titleDigitizationMode;
     }
 
     /**

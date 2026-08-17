@@ -89,4 +89,16 @@ class HoldSettings
     {
         return $this->config->title_level_holds_mode ?? 'disabled';
     }
+
+    /**
+     * Get Digitization Holds Mode.
+     *
+     * This is responsible for returning the digitization (title-level) holds mode
+     *
+     * @return string The Digitization Holds mode
+     */
+    public function getTitleDigitizationMode()
+    {
+        return $this->config->title_level_digitization_mode ?? 'disabled';
+    }
 }
