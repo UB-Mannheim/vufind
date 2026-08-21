@@ -127,6 +127,17 @@ class Config
     }
 
     /**
+     * Should we limit the number of authors displayed on the full record?
+     *
+     * @return int
+     */
+    public function getRecordAuthorLimit()
+    {
+        $limit = $this->get('config')->Record->authorLimit;
+        return $limit ? (int)$limit : PHP_INT_MAX;
+    }
+
+    /**
      * Check if index record should always be displayed (i.e. also when a
      * format-specific template is available).
      *
