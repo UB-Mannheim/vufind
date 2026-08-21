@@ -86,6 +86,12 @@ VuFind.register('record', function Record() {
     removeCheckRouteParam();
     VuFind.truncate.initTruncate('.truncate-subjects', '.subject-line');
     VuFind.truncate.initTruncate('table.truncate-field', 'tr.holding-row', function createTd(m) { return '<td colspan="2">' + m + '</td>'; });
+    VuFind.listen('record-tab-init', function reinitTruncation() {
+      VuFind.truncate.initTruncate('.truncate-subjects', '.subject-line');
+    });
+    VuFind.listen('embedded-record-init', function reinitTruncation() {
+      VuFind.truncate.initTruncate('.truncate-subjects', '.subject-line');
+    });
   }
 
   return {
