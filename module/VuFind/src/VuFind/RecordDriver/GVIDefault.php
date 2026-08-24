@@ -102,6 +102,19 @@ class GVIDefault extends SolrMarc
     }
 
     /**
+     * Check whether the record should be treated as a remote record.
+     *
+     * GVI records are provided by a remote consortium index and carry no
+     * local ILS availability data, so they must be treated as remote records.
+     *
+     * @return bool
+     */
+    public function isRemote()
+    {
+        return true;
+    }
+
+    /**
      * Get the full title of the record.
      *
      * Combines MARC 245 subfields a (main title), b (subtitle), n (number of
