@@ -58,6 +58,7 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
         'browzine' => BrowZine::class,
         'contentcafe' => ContentCafe::class,
         'demo' => Demo::class,
+        'formatbased' => FormatBased::class,
         'google' => Google::class,
         'koha' => Koha::class,
         'librarything' => LibraryThing::class,
@@ -76,6 +77,7 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
      * @var array
      */
     protected $factories = [
+        FormatBased::class => FormatBasedFactory::class,
         ObalkyKnih::class => ObalkyKnihContentFactory::class,
         RecordData::class => RecordDataFactory::class,
     ];
