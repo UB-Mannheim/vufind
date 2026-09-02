@@ -1,7 +1,7 @@
 <?php
 
 /**
- * KXPZ Record Controller.
+ * KXPZ home action.
  *
  * PHP version 8
  *
@@ -21,36 +21,40 @@
  * <https://www.gnu.org/licenses/>.
  *
  * @category VuFind
- * @package  Controller
- * @author   Stefan Weil <sw@weilnetz.de>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
- */
-
-namespace VuFind\Controller;
-
-use Laminas\ServiceManager\ServiceLocatorInterface;
-
-/**
- * KXPZ Record Controller.
- *
- * @category VuFind
- * @package  Controller
+ * @package  Action
  * @author   Stefan Weil <sw@weilnetz.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
-class KXPZrecordController extends AbstractRecord
+
+namespace VuFind\Action\KXPZ;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+/**
+ * KXPZ home action.
+ *
+ * @category VuFind
+ * @package  Action
+ * @author   Stefan Weil <sw@weilnetz.de>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org Main Site
+ */
+class HomeAction extends AbstractKXPZSearchAndResultsAction
 {
     /**
-     * Constructor.
+     * Display home page.
      *
-     * @param ServiceLocatorInterface $sm Service locator
+     * @param ServerRequestInterface $request  Server request
+     * @param ResponseInterface      $response Response
+     *
+     * @return ResponseInterface
      */
-    public function __construct(ServiceLocatorInterface $sm)
-    {
-        $this->sourceId = 'KXPZ';
-        $this->fallbackDefaultTab = 'Description';
-        parent::__construct($sm);
+    public function action(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+    ): ResponseInterface {
+        return $this->renderHomePage();
     }
 }

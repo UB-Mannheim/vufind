@@ -235,6 +235,8 @@ class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
         'Browzine' => 'BrowZine',
         'Gvi' => 'GVI',
         'Gvirecord' => 'GVIRecord',
+        'Kxpz' => 'KXPZ',
+        'Kxpzrecord' => 'KXPZRecord',
         'Myresearch' => 'MyResearch',
         'Shortlink' => 'ShortLink',
     ];

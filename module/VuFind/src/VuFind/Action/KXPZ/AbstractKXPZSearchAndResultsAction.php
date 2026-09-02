@@ -1,7 +1,7 @@
 <?php
 
 /**
- * K10plus-Zentral (KXPZ) Controller.
+ * Abstract base class for KXPZ search actions.
  *
  * PHP version 8
  *
@@ -21,55 +21,35 @@
  * <https://www.gnu.org/licenses/>.
  *
  * @category VuFind
- * @package  Controller
- * @author   Stefan Weil <sw@weilnetz.de>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
- */
-
-namespace VuFind\Controller;
-
-use Laminas\ServiceManager\ServiceLocatorInterface;
-
-/**
- * KXPZ Controller.
- *
- * @category VuFind
- * @package  Controller
+ * @package  Action
  * @author   Stefan Weil <sw@weilnetz.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
-class KXPZController extends AbstractSolrSearch
+
+namespace VuFind\Action\KXPZ;
+
+use VuFind\Action\Search\AbstractSearchAndResultsAction;
+
+/**
+ * Abstract base class for KXPZ search actions.
+ *
+ * @category VuFind
+ * @package  Action
+ * @author   Stefan Weil <sw@weilnetz.de>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org Main Site
+ */
+abstract class AbstractKXPZSearchAndResultsAction extends AbstractSearchAndResultsAction
 {
     /**
-     * Constructor.
+     * Initialize the action.
      *
-     * @param ServiceLocatorInterface $sm Service locator
+     * @return void
      */
-    public function __construct(ServiceLocatorInterface $sm)
+    protected function init(): void
     {
+        parent::init();
         $this->searchClassId = 'KXPZ';
-        parent::__construct($sm);
-    }
-
-    /**
-     * Results action.
-     *
-     * @return mixed
-     */
-    public function resultsAction()
-    {
-        // Special case -- redirect tag searches.
-        if ($this->params()->fromQuery('type') == 'tag') {
-            // Because we're coming in from a search, we want to do a fuzzy
-            // tag search, not an exact search like we would when linking to a
-            // specific tag name.
-            $this->getRequest()->getQuery()->set('fuzzy', 'true');
-            return $this->forwardTo('Tag', 'Home');
-        }
-
-        // Default case -- standard behavior.
-        return parent::resultsAction();
     }
 }
