@@ -30,16 +30,17 @@
 
 namespace VuFind\RecordDriver;
 
-use function array_map;
-use function explode;
-use function in_array;
-use function str_replace;
-use function strlen;
-use function trim;
-
 use VuFindSearch\Command\SearchCommand;
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\Query;
+
+use function array_map;
+use function explode;
+use function in_array;
+use function is_string;
+use function str_replace;
+use function strlen;
+use function trim;
 
 /**
  * Default model for GVI records -- used when a more specific model based on
@@ -304,6 +305,105 @@ class GVIDefault extends SolrMarc
     }
 
     /**
+     * Get an array of all the formats associated with the record.
+     *
+     * The GVI index does not provide a standard "format" Solr field; instead,
+     * the content type of the material is indexed in the
+     * "material_content_type" field. This method maps the GVI values to
+     * standard VuFind format names so that format-based features (such as
+     * the FormatBased cover provider) work with GVI records.
+     *
+     * @return array
+     */
+    public function getFormats(): array
+    {
+        $formats = [];
+        foreach ((array)($this->fields['material_content_type'] ?? []) as $gviFormat) {
+            $format = $this->mapGviFormat($gviFormat);
+            if ($format !== '' && !in_array($format, $formats, true)) {
+                $formats[] = $format;
+            }
+        }
+        return $formats;
+    }
+
+    /**
+     * Map a GVI material content type (material_content_type field) to a
+     * standard VuFind format name.
+     *
+     * @param string $gviFormat Value of the GVI material_content_type field
+     *
+     * @return string Standard format name ('' if no mapping exists)
+     */
+    protected function mapGviFormat(string $gviFormat): string
+    {
+        $map = [
+            'Book' => 'Book',
+            'Large Print' => 'Book',
+            'EBook' => 'eBook',
+            'EJournal' => 'Journal',
+            'Journal/Magazine' => 'Journal',
+            'Journal/Magazine|Looseleaf' => 'Journal',
+            'Journal/Magazine|Newspaper' => 'Newspaper',
+            'Journal/Magazine|Periodical' => 'Serial',
+            'Newspaper' => 'Newspaper',
+            'Map' => 'Map',
+            'Map|Atlas' => 'Map',
+            'Map|Globe' => 'Globe',
+            'Map|Globe|Physical Object' => 'Globe',
+            'Map|Manuscript/Archive' => 'Map',
+            'Manuscript/Archive' => 'Text',
+            'Musical Score' => 'Musical Score',
+            'Musical Score|Manuscript/Archive' => 'Musical Score',
+            'Sound Recording' => 'Sound Recording',
+            'Streaming Audio' => 'Sound Recording',
+            'Sound Track Film' => 'Sound Recording',
+            'CD' => 'Sound Recording',
+            'Cassette' => 'Sound Recording',
+            'Cartridge' => 'Sound Recording',
+            'Cylinder' => 'Sound Recording',
+            'LP' => 'Sound Recording',
+            'Other Media' => 'Sound Recording',
+            'Roll' => 'Sound Recording',
+            'Tape Reel' => 'Sound Recording',
+            'Wire Recording' => 'Sound Recording',
+            'Video' => 'Video',
+            'Film' => 'Video',
+            'Blu-Ray' => 'Video',
+            'DVD' => 'Video',
+            'Laserdisc' => 'Video',
+            'Online Video' => 'Video',
+            'Super-VHS' => 'Video',
+            'VHS' => 'Video',
+            'Video 8mm' => 'Video',
+            'Video Beta' => 'Video',
+            'Video Betacam' => 'Video',
+            'Video Betacam SP' => 'Video',
+            'Video Disc' => 'Video',
+            'Video EIAJ' => 'Video',
+            'Video Hi 8mm' => 'Video',
+            'Video Other' => 'Video',
+            'Video Type C' => 'Video',
+            'Video U-Matic' => 'Video',
+            'Thesis/Dissertation' => 'Dissertation',
+            'Government Document' => 'Government Document',
+            'Microform' => 'Microfilm',
+            'Braille' => 'Braille',
+            'Kit' => 'Kit',
+            'Equipment' => 'Physical Object',
+            'Physical Object' => 'Physical Object',
+            'Computer Resource' => 'Software',
+            'Computer Media' => 'Software',
+            'Online' => 'Electronic',
+            'Online|Computer Resource' => 'Electronic',
+            'Visual Materials' => 'Photo',
+            'Broadside' => 'Text',
+            'Special Instructional Material' => 'Text',
+        ];
+        return $map[$gviFormat] ?? '';
+    }
+
+    /**
      * Return the first valid DOI found in the record (false if none).
      *
      * Reads from MARC 024 where indicator1=7 and subfield 2 equals 'doi',
@@ -395,7 +495,8 @@ class GVIDefault extends SolrMarc
     private function hasLocalIsilInField924(array $localIsils): bool
     {
         foreach ($this->getField924() as $field) {
-            if (isset($field['isil'])
+            if (
+                isset($field['isil'])
                 && in_array($field['isil'], $localIsils, true)
             ) {
                 return true;
@@ -443,7 +544,8 @@ class GVIDefault extends SolrMarc
             foreach ($f924 as $field) {
                 if (isset($field['subfields'])) {
                     foreach ($field['subfields'] as $sf) {
-                        if ($sf['code'] === 'b'
+                        if (
+                            $sf['code'] === 'b'
                             && in_array($sf['data'], $localIsils, true)
                         ) {
                             return true;
