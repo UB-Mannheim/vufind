@@ -65,10 +65,10 @@ class ResultsFactory extends \VuFind\Search\Results\ResultsFactory
         ?array $options = null
     ) {
         $solr = parent::__invoke($container, $requestedName, $options);
-        $config = $container->get(\VuFind\Config\ConfigManagerInterface::class)->getConfigObject('KXPZ');
+        $config = $container->get(\VuFind\Config\ConfigManagerInterface::class)->getConfigArray('KXPZ');
         $solr->setSpellingProcessor(
             new \VuFind\Search\Solr\SpellingProcessor(
-                $config->Spelling ?? null,
+                $config['Spelling'] ?? null,
                 $solr->getOptions()->getSpellingNormalizer()
             )
         );
