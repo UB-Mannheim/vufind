@@ -32,6 +32,7 @@ namespace VuFindTest\RecordDriver;
 
 use VuFind\ILS\Connection;
 use VuFind\ILS\Logic\Holds;
+use VuFind\ILS\Logic\TitleDigitization;
 use VuFind\ILS\Logic\TitleHolds;
 
 /**
@@ -313,7 +314,8 @@ class SolrMarcTest extends \PHPUnit\Framework\TestCase
             $record->attachILS(
                 $this->createMock(Connection::class),
                 $this->createMock(Holds::class),
-                $this->createMock(TitleHolds::class)
+                $this->createMock(TitleHolds::class),
+                $this->createMock(TitleDigitization::class)
             );
             $record->setIlsBackends(['Solr']);
         }

@@ -195,19 +195,19 @@ class AccountMenu extends AbstractMenu
                   status: true
                   checkMethod: checkHolds
 
+                - name: digitizationRequests
+                  label: Digitization Requests
+                  route: myresearch-digitizationrequests
+                  icon: file-lines
+                  status: true
+                  checkMethod: checkDigitizationRequests
+
                 - name: storageRetrievalRequests
                   label: Storage Retrieval Requests
                   route: myresearch-storageretrievalrequests
                   icon: user-storage-retrievals
                   status: true
                   checkMethod: checkStorageRetrievalRequests
-
-                - name: digitizationRequests
-                  label: Digitization Requests
-                  route: myresearch-digitizationrequests
-                  icon: digitization
-                  status: true
-                  checkMethod: checkDigitizationRequests
 
                 - name: ILLRequests
                   label: Interlibrary Loan Requests

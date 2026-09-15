@@ -6,6 +6,7 @@
             "source": "Solr",
             "availability": 1,
             "status": "Item in place",
+            "library": "Central|Central",
             "location": "General|general",
             "reserve": "N",
             "callnumber": "HB Ab",
@@ -19,6 +20,7 @@
             "holdings_id": "2221",
             "holdtype": "auto",
             "addLink": false,
+            "addDigitizationRequestLink": false,
             "description": null
         },
         {
@@ -26,6 +28,7 @@
             "source": "Solr",
             "availability": 2,
             "status": "Staff Use|Staff Use",
+            "library": "Central|Central",
             "location": "Staff|staff",
             "reserve": "N",
             "callnumber": "HB Ab",
@@ -39,10 +42,12 @@
             "holdings_id": "2221",
             "holdtype": "auto",
             "addLink": false,
+            "addDigitizationRequestLink": false,
             "description": null
         },
         {
             "addLink": false,
+            "addDigitizationRequestLink": false,
             "availability": 0,
             "barcode": "3333",
             "callnumber": "HB Ab",
@@ -59,10 +64,12 @@
             "reserve": "N",
             "returnDate": false,
             "source": "Solr",
-            "status": "Checked Out"
+            "status": "Checked Out",
+            "library": "Central|Central"
         },
         {
             "addLink": false,
+            "addDigitizationRequestLink": false,
             "availability": 0,
             "barcode": "3334",
             "callnumber": "HB Ab",
@@ -79,10 +86,12 @@
             "reserve": "N",
             "returnDate": false,
             "source": "Solr",
-            "status": "Technical - Migration|status_technical"
+            "status": "Technical - Migration|status_technical",
+            "library": "Central|Central"
         },
         {
             "addLink": false,
+            "addDigitizationRequestLink": false,
             "availability": 1,
             "barcode": "3335",
             "callnumber": "HB Ab",
@@ -101,10 +110,12 @@
             "reserve": "N",
             "returnDate": false,
             "source": "Solr",
-            "status": "Order Only|Order Only"
+            "status": "Order Only|Order Only",
+            "library": "Central|Central"
         },
         {
             "addLink": false,
+            "addDigitizationRequestLink": false,
             "availability": 0,
             "barcode": "3336",
             "callnumber": "HB Ab",
@@ -123,10 +134,12 @@
             "reserve": "N",
             "returnDate": false,
             "source": "Solr",
-            "status": "Newer There|Newer There"
+            "status": "Newer There|Newer There",
+            "library": "Central|Central"
         },
         {
             "addLink": false,
+            "addDigitizationRequestLink": false,
             "availability": 1,
             "barcode": "3337",
             "callnumber": "HB Ab",
@@ -145,7 +158,8 @@
             "reserve": "N",
             "returnDate": false,
             "source": "Solr",
-            "status": "Always There|Always There"
+            "status": "Always There|Always There",
+            "library": "Central|Central"
         }
     ],
     "electronic_holdings": [

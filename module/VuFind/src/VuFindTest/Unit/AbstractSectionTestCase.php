@@ -223,6 +223,7 @@ abstract class AbstractSectionTestCase extends \PHPUnit\Framework\TestCase
                 return match ($method) {
                     'getMyTransactions' => $checkMethods['checkCheckedout'] ?? true,
                     'getMyHolds' => $checkMethods['checkHolds'] ?? true,
+                    'getMyDigitizationRequests' => $checkMethods['checkDigitizationRequests'] ?? true,
                     'getMyFines' => $checkMethods['checkFines'] ?? true,
                 };
             });
@@ -260,6 +261,7 @@ abstract class AbstractSectionTestCase extends \PHPUnit\Framework\TestCase
             'checkCheckedout' => $value,
             'checkHistoricloans' => $value,
             'checkHolds' => $value,
+            'checkDigitizationRequests' => $value,
             'checkStorageRetrievalRequests' => $value,
             'checkILLRequests' => $value,
             'checkFines' => $value,
