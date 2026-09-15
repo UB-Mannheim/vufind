@@ -48,6 +48,13 @@ use function is_bool;
 class TitleDigitization
 {
     /**
+     * Holding locations to hide from display.
+     *
+     * @var array
+     */
+    protected $hideHoldings;
+
+    /**
      * Constructor.
      *
      * @param \VuFind\Auth\ILSAuthenticator $ilsAuth ILS authenticator
@@ -61,6 +68,7 @@ class TitleDigitization
         protected \VuFind\Crypt\HMAC $hmac,
         protected array $config
     ) {
+        $this->hideHoldings = $this->config['Record']['hide_holdings'] ?? [];
     }
 
     /**
