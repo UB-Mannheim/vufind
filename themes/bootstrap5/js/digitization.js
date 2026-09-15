@@ -1,19 +1,20 @@
-/*global VuFind */
 /*exported setUpDigitizationRequestForm */
 
 /**
  * Set up the digitization request form by toggling the page number fields
  * based on the partial digitization checkbox.
- *
- * @param {string} recordId The ID of the record for the digitization request
  */
-function setUpDigitizationRequestForm(recordId) {
+function setUpDigitizationRequestForm() {
+  /**
+   * Toggle the partial digitization fields based on the selected
+   * digitization type radio button.
+   */
   function togglePartialFields() {
     var $digitizationTypeRadios = document.querySelectorAll('input[name="gatheredDetails[digitizationType]"]');
     var $partialDigitizationContainer = document.querySelector('#partialFields');
 
     let checkedRadio = null;
-    $digitizationTypeRadios.forEach(function(radio) {
+    $digitizationTypeRadios.forEach(function findCheckedTypeRadio(radio) {
       if (radio.checked) {
         checkedRadio = radio;
       }
@@ -28,12 +29,16 @@ function setUpDigitizationRequestForm(recordId) {
     }
   }
 
+  /**
+   * Toggle the page range fields based on the selected partial
+   * digitization type radio button.
+   */
   function togglePageFields() {
     var $partialDigitizationTypeRadios = document.querySelectorAll('input[name="gatheredDetails[partialDigitizationType]"]');
     var $pageRangeContainer = document.querySelector('#pageRangeFields');
 
     let checkedRadio = null;
-    $partialDigitizationTypeRadios.forEach(function(radio) {
+    $partialDigitizationTypeRadios.forEach(function findCheckedPageRadio(radio) {
       if (radio.checked) {
         checkedRadio = radio;
       }
@@ -49,17 +54,16 @@ function setUpDigitizationRequestForm(recordId) {
   }
 
   document.querySelectorAll('input[name="gatheredDetails[digitizationType]"]').forEach(
-    function(radio) {
+    function attachTypeChange(radio) {
       radio.addEventListener('change', togglePartialFields);
     }
   );
   document.querySelectorAll('input[name="gatheredDetails[partialDigitizationType]"]').forEach(
-    function(radio) {
+    function attachPageChange(radio) {
       radio.addEventListener('change', togglePageFields);
     }
   );
-  
+
   togglePartialFields();
   togglePageFields();
-
 }

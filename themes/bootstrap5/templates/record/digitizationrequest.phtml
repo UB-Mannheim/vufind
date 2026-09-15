@@ -113,10 +113,10 @@
 
   $js = <<<JS
       if ($.isReady) {
-          setUpDigitizationRequestForm("{$this->escapeHtml($this->driver->getUniqueId())}");
+          setUpDigitizationRequestForm();
       } else {
           $(document).ready(function() {
-              setUpDigitizationRequestForm("{$this->escapeHtml($this->driver->getUniqueId())}");
+              setUpDigitizationRequestForm();
           });
       }
       JS;
