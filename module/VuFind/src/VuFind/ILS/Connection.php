@@ -197,7 +197,7 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
     /**
      * Set the digitization configuration for the connection.
      *
-     * @param array $config Digitization configuration
+     * @param array $settings Digitization configuration
      *
      * @return Connection
      */

@@ -179,7 +179,11 @@ class TitleDigitization
                 (is_array($result) && $result['valid'])
                 || (is_bool($result) && $result)
             ) {
-                return $this->getDigitizationRequestDetails($data, $checkDigitizationRequests['HMACKeys'], $linkOverrides);
+                return $this->getDigitizationRequestDetails(
+                    $data,
+                    $checkDigitizationRequests['HMACKeys'],
+                    $linkOverrides
+                );
             }
         }
         return false;
@@ -234,7 +238,11 @@ class TitleDigitization
                     return $this->catalog->getDigitizationRequestLink($id, $data);
                 } else {
                     // Return non-opac link
-                    return $this->getDigitizationRequestDetails($data, $checkDigitizationRequests['HMACKeys'], $linkOverrides);
+                    return $this->getDigitizationRequestDetails(
+                        $data,
+                        $checkDigitizationRequests['HMACKeys'],
+                        $linkOverrides
+                    );
                 }
             }
         }

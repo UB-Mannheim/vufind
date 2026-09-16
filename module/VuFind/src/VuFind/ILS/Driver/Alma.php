@@ -341,7 +341,8 @@ class Alma extends AbstractBase implements
      *
      * This is responsible for retrieving the holdings list a certain record.
      *
-     * @param string $id The record id to retrieve the holdings for
+     * @param string $id      The record id to retrieve the holdings for
+     * @param array  $options Optional request options
      *
      * @return simple_xml_element On success an array with the key "total" containing the total
      * number of holdings for the given bib id, and the key "holding" containing an
@@ -1610,6 +1611,10 @@ class Alma extends AbstractBase implements
     /**
      * Request from /conf/departments.
      *
+     * @param string  $type        Department type
+     * @param ?string $libraryCode Library code to restrict to
+     * @param string  $view        View type
+     *
      * @return array of departments
      */
     public function getDepartments($type = 'ALL', $libraryCode = null, $view = 'FULL')
@@ -1637,6 +1642,9 @@ class Alma extends AbstractBase implements
 
     /**
      * Get digitization department for digitization requests.
+     *
+     * @param string     $mmsId The MMS id of the record
+     * @param ?\stdClass $item  The item (provides the holding library)
      *
      * @return string with code of digitization department
      */
@@ -2125,7 +2133,8 @@ class Alma extends AbstractBase implements
         $holId = $digitizationDetails['digitizationings_id'] ?? $digitizationDetails['digitizationing_id'];
         $itmId = $digitizationDetails['item_id'];
         $patronId = $digitizationDetails['patron']['id'];
-        $digitizationDepartment = $digitizationDetails['digitizationDepartment'] ?? $this->getDigitizationDepartment($mmsId, $digitizationDetails['requestedItem']);
+        $digitizationDepartment = $digitizationDetails['digitizationDepartment']
+            ?? $this->getDigitizationDepartment($mmsId, $digitizationDetails['requestedItem']);
         $requiredBy = (isset($digitizationDetails['requiredBy']))
         ? $this->dateConverter->convertFromDisplayDate(
             'Y-m-d',
@@ -2146,8 +2155,9 @@ class Alma extends AbstractBase implements
         $body['part'] = $digitizationDetails['part'] ?? null;
         $body['description'] = $digitizationDetails['description'] ?? null;
         $body['partial_digitization'] =  $partialDigitization ? 'true' : 'false';
-        if ($partial_digitization) {
-            // This is a quirk of the Alma API: while partial_digitization is a bool, full_chapter is actually a string of either 'true' or 'false'.
+        if ($partialDigitization) {
+            // This is a quirk of the Alma API: while partial_digitization is a bool,
+            // full_chapter is actually a string of either 'true' or 'false'.
             $body['full_chapter'] = $fullChapterOrArticle ? 'true' : 'false';
             $body['chapter_or_article_title'] = $digitizationDetails['chapterArticleTitle'] ?? null;
             $body['chapter_or_article_author'] = $digitizationDetails['chapterArticleAuthor'] ?? null;
@@ -2221,7 +2231,6 @@ class Alma extends AbstractBase implements
      * Get the user's digitization requests.
      *
      * @param array $patron Patron information
-     * @param array $params Additional parameters
      *
      * @return array Array of digitization requests
      */

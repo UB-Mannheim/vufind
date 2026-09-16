@@ -76,6 +76,8 @@ use function is_object;
  * @method Plugin\Permission permission() Permission plugin
  * @method Plugin\StorageRetrievalRequests storageRetrievalRequests()
  * StorageRetrievalRequests plugin
+ * @method Plugin\DigitizationRequests digitizationRequests()
+ * DigitizationRequests plugin
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */

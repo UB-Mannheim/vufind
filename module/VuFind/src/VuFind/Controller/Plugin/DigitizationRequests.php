@@ -180,9 +180,10 @@ class DigitizationRequests extends AbstractRequestBase
                     );
                 }
                 if ($cancelResults['count'] > 0) {
-                    $flashMsg->addSuccessMessage(
-                        ['msg' => 'digitization_request_cancel_success_items', 'tokens' => ['%%count%%' => $cancelResults['count']]]
-                    );
+                    $flashMsg->addSuccessMessage([
+                        'msg' => 'digitization_request_cancel_success_items',
+                        'tokens' => ['%%count%%' => $cancelResults['count']],
+                    ]);
                 }
                 return $cancelResults;
             }

@@ -36,6 +36,7 @@ use VuFind\ActionHelper\DigitizationRequestsHelper;
 use VuFind\ActionHelper\FlashMessagesHelper;
 use VuFind\ActionHelper\LoginHelper;
 use VuFind\Auth\Manager as AuthManager;
+use VuFind\Config\ConfigManager;
 use VuFind\Config\Feature\ExplodeSettingTrait;
 use VuFind\Date\Converter as DateConverter;
 use VuFind\Db\Service\AuditEventService;
@@ -75,6 +76,7 @@ class DigitizationRequestAction extends AbstractRecordAction implements Translat
      * @param SearchMemory      $searchMemory      Search memory
      * @param TabManager        $tabManager        Tab manager
      * @param AuthManager       $authManager       Authentication manager
+     * @param ConfigManager     $configManager     Configuration manager
      * @param RecordLoader      $recordLoader      Record loader
      * @param RecordRouter      $recordRouter      Record router
      * @param ResultScroller    $resultScroller    Result scroller
@@ -88,6 +90,7 @@ class DigitizationRequestAction extends AbstractRecordAction implements Translat
         SearchMemory $searchMemory,
         TabManager $tabManager,
         AuthManager $authManager,
+        ConfigManager $configManager,
         RecordLoader $recordLoader,
         RecordRouter $recordRouter,
         ResultScroller $resultScroller,
@@ -103,6 +106,7 @@ class DigitizationRequestAction extends AbstractRecordAction implements Translat
             $searchMemory,
             $tabManager,
             $authManager,
+            $configManager,
             $recordLoader,
             $recordRouter,
             $resultScroller,
@@ -194,7 +198,7 @@ class DigitizationRequestAction extends AbstractRecordAction implements Translat
                 // Add patron data and converted dates to submitted data
                 $details = $gatheredDetails + [
                     'patron' => $patron,
-                    'requiredByTS' => $validationResults['requiredByTS'],
+                    'requiredByTS' => $validationResult['requiredByTS'],
                 ];
 
                 // Attempt to place the digitization request:
@@ -267,7 +271,8 @@ class DigitizationRequestAction extends AbstractRecordAction implements Translat
             $gatheredDetails['digitizationType'] = $this->config['Catalog']['defaultDigitizationType'] ?? 'full';
         }
         if (!isset($gatheredDetails['partialDigitizationType'])) {
-            $gatheredDetails['partialDigitizationType'] = $this->config['Catalog']['defaultPartialDigitizationType'] ?? 'full';
+            $gatheredDetails['partialDigitizationType']
+                = $this->config['Catalog']['defaultPartialDigitizationType'] ?? 'full';
         }
 
         $templateParams = $this->getTemplateParams(

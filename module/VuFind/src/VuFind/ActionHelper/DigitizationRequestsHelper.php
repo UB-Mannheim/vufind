@@ -219,6 +219,7 @@ class DigitizationRequestsHelper extends AbstractRequestBase
             'requiredByTS' => null,
             'errors' => [],
         ];
+        $errors = [];
 
         if (in_array('digitizationType', $extraDigitizationFields)) {
             $digitizationType = $gatheredDetails['digitizationType'];
@@ -228,11 +229,18 @@ class DigitizationRequestsHelper extends AbstractRequestBase
                     $errors[] = 'digitization_request_partial_digitization_type_required';
                 }
                 // Make sure we have a valid page range.
-                if ($gatheredDetails['partialDigitizationType'] == 'pageRange' && !$this->pageRangeIsValid($gatheredDetails['startPage'], $gatheredDetails['endPage'])) {
+                $partialType = $gatheredDetails['partialDigitizationType'];
+                if (
+                    $partialType == 'pageRange'
+                    && !$this->pageRangeIsValid(
+                        $gatheredDetails['startPage'],
+                        $gatheredDetails['endPage']
+                    )
+                ) {
                     $errors[] = 'digitization_request_invalid_page_range';
                 }
                 // Make sure we have a chapter title
-                if ($gatheredDetails['partialDigitizationType'] == 'full' && empty($gatheredDetails['chapterArticleTitle'])) {
+                if ($partialType == 'full' && empty($gatheredDetails['chapterArticleTitle'])) {
                     $errors[] = 'digitization_request_chapter_article_title_required';
                 }
             }
@@ -269,8 +277,8 @@ class DigitizationRequestsHelper extends AbstractRequestBase
     /**
      * Validate digitization request page range.
      *
-     * @param mixed $startPage
-     * @param mixed $endPage
+     * @param mixed $startPage Starting page
+     * @param mixed $endPage   Ending page
      *
      * @return bool If the page range is valid
      */

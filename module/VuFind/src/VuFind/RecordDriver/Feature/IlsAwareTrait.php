@@ -85,9 +85,9 @@ trait IlsAwareTrait
     /**
      * Attach an ILS connection and related logic to the driver.
      *
-     * @param \VuFind\ILS\Connection            $ils                      ILS connection
-     * @param \VuFind\ILS\Logic\Holds           $holdLogic                Hold logic handler
-     * @param \VuFind\ILS\Logic\TitleHolds      $titleHoldLogic           Title hold logic handler
+     * @param \VuFind\ILS\Connection              $ils                    ILS connection
+     * @param \VuFind\ILS\Logic\Holds             $holdLogic              Hold logic handler
+     * @param \VuFind\ILS\Logic\TitleHolds        $titleHoldLogic         Title hold logic handler
      * @param \VuFind\ILS\Logic\TitleDigitization $titleDigitizationLogic Title digitization logic handler
      *
      * @return void
